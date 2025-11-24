@@ -4,7 +4,7 @@ const sqlite3 = require("sqlite3").verbose();
 const cors = require("cors");
 require("dotenv").config();
 
-//Cnfigure ports
+//Configure ports
 const args = process.argv;
 const p_index = args.indexOf("--p");
 const cp_index = args.indexOf("--cp");
@@ -27,18 +27,18 @@ const db = new sqlite3.Database("softserve.db", (err) => {
   if (err) {
     console.error(err.message);
   }
-  console.log("Connected to  database.");
+  console.log("Connected to database.");
 });
 
 // CREATE
 app.post("/products", (req, res) => {
   const { name, price } = req.body;
-  if (typeof name === undefined || price === undefined) {
+  if (typeof name === 'undefined' || price === undefined) {
     res.status(400).json({ error: "Invalid data format" });
     return;
   }
 
-  const sql = `INSERT INTO products (name,  price) VALUES (?, ?)`;
+  const sql = `INSERT INTO products (name, price) VALUES (?, ?)`;
   db.run(sql, [name, price], function (err) {
     if (err) {
       res.status(500).json({ error: err.message });
