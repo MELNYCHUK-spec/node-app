@@ -26,6 +26,12 @@ jobs:
       - name: Run tests with coverage
         run: npm run test:coverage
 
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
       - name: Analyze with SonarCloud
         uses: SonarSource/sonarcloud-github-action@v1.9
         env:
@@ -35,4 +41,4 @@ jobs:
             -Dsonar.projectKey=node-app
             -Dsonar.organization=melnychuk-spec
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
-          projectBaseDir: .
+            -Dsonar.sources=.
