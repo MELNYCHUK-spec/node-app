@@ -34,16 +34,16 @@ jobs:
       - name: Run tests with coverage
         run: npm run test:coverage
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
+      # - name: Setup Java
+      #   uses: actions/setup-java@v4
+      #   with:
+      #     distribution: 'temurin'
+      #     java-version: '17'
 
-      - name: Check Java version
-        run: |
-          echo "JAVA_HOME=$JAVA_HOME"
-          java -version
+      # - name: Check Java version
+      #   run: |
+      #     echo "JAVA_HOME=$JAVA_HOME"
+      #     java -version
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
