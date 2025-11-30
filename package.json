@@ -7,7 +7,7 @@
     "start": "node index.js",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "__comments__": "sonar:sonar-scanner -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN (For SonarQube server on Ubuntu Linux)",
+    "__comments__": "sonar:sonar-scanner -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN (For SonarQube server on Ubuntu Linux, using enviroment variables)",
     "sonar": "dotenv -e .env -- npx @sonar/scan"
   },
   "keywords": [],
