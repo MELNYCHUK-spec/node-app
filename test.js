@@ -1,13 +1,12 @@
 const request = require('supertest');
-const express = require('express');
 const app = require('./index.js');
 
 describe('Products API', () => {
   let createdId;
 
-  test('POST /products', async () => {
+  test('POST /api/products', async () => {
     const res = await request(app)
-      .post('/products')
+      .post('/api/products')
       .send({ name: 'TestProduct', price: 99.99 });
 
     expect(res.statusCode).toBe(201);
@@ -15,36 +14,36 @@ describe('Products API', () => {
     createdId = res.body.productId;
   });
 
-  test('GET /products', async () => {
-    const res = await request(app).get('/products');
+  test('GET /api/products', async () => {
+    const res = await request(app).get('/api/products');
     expect(res.statusCode).toBe(200);
     expect(Array.isArray(res.body)).toBe(true);
   });
 
-  test('GET /products/:id', async () => {
-    const res = await request(app).get(`/products/${createdId}`);
+  test('GET /api/products/:id', async () => {
+    const res = await request(app).get(`/api/products/${createdId}`);
     expect(res.statusCode).toBe(200);
     expect(res.body).toHaveProperty('name');
     expect(res.body).toHaveProperty('price');
   });
 
-  test('PATCH /products/:id', async () => {
+  test('PATCH /api/products/:id', async () => {
     const res = await request(app)
-      .patch(`/products/${createdId}`)
+      .patch(`/api/products/${createdId}`)
       .send({ price: 149.99 });
 
     expect(res.statusCode).toBe(200);
     expect(res.body.message).toBe('Product updated successfully.');
   });
 
-  test('DELETE /products/:id', async () => {
-    const res = await request(app).delete(`/products/${createdId}`);
+  test('DELETE /api/products/:id', async () => {
+    const res = await request(app).delete(`/api/products/${createdId}`);
     expect(res.statusCode).toBe(200);
     expect(res.body.message).toBe('Product deleted successfully.');
   });
 
-  test('GET /products/:id — после удаления', async () => {
-    const res = await request(app).get(`/products/${createdId}`);
+  test('GET /api/products/:id — после удаления', async () => {
+    const res = await request(app).get(`/api/products/${createdId}`);
     expect(res.statusCode).toBe(404);
     expect(res.body.error).toBe('Product not found');
   });
