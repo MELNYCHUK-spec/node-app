@@ -1,37 +1,5 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const sqlite3 = require("sqlite3").verbose();
-const cors = require("cors");
-require("dotenv").config();
-
-//Configure ports
-const args = process.argv;
-const p_index = args.indexOf("--p");
-const cp_index = args.indexOf("--cp");
-const PORT = p_index !== -1 ? args[p_index + 1] : process.env.PORT || 5000;
-const CLIENT_PORT =
-  cp_index !== -1 ? args[cp_index + 1] : process.env.CLIENT_PORT || 3000;
-
-const app = express();
-app.use(
-  cors({
-    origin: `http://localhost:${CLIENT_PORT}`,
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-  })
-);
-
-app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-const db = new sqlite3.Database("softserve.db", (err) => {
-  if (err) {
-    console.error(err.message);
-  }
-  console.log("Connected to database.");
-});
-
 // CREATE
-app.post("/products", (req, res) => {
+app.post("/api/products", (req, res) => {
   const { name, price } = req.body;
   if (typeof name === 'undefined' || price === undefined) {
     res.status(400).json({ error: "Invalid data format" });
@@ -52,7 +20,7 @@ app.post("/products", (req, res) => {
 });
 
 // READ all
-app.get("/products", (req, res) => {
+app.get("/api/products", (req, res) => {
   const sql = `SELECT * FROM products`;
   db.all(sql, [], (err, rows) => {
     if (err) {
@@ -64,7 +32,7 @@ app.get("/products", (req, res) => {
 });
 
 // READ once
-app.get("/products/:id", (req, res) => {
+app.get("/api/products/:id", (req, res) => {
   const id = req.params.id;
   const sql = `SELECT * FROM products WHERE id = ? `;
   db.get(sql, id, (err, row) => {
@@ -81,7 +49,7 @@ app.get("/products/:id", (req, res) => {
 });
 
 // UPDATE
-app.patch("/products/:id", (req, res) => {
+app.patch("/api/products/:id", (req, res) => {
   const id = req.params.id;
   const selectSqlGet = "SELECT name, price FROM products WHERE id = ?";
   db.get(selectSqlGet, [id], (err, row) => {
@@ -109,7 +77,7 @@ app.patch("/products/:id", (req, res) => {
 });
 
 // DELETE
-app.delete("/products/:id", (req, res) => {
+app.delete("/api/products/:id", (req, res) => {
   const id = req.params.id;
   const sql = `DELETE FROM products WHERE id = ?`;
   db.run(sql, id, function (err) {
@@ -126,13 +94,3 @@ app.delete("/products/:id", (req, res) => {
     });
   });
 });
-
-// Export app for testing
-module.exports = app;
-
-// Start server only if not in test mode
-if (require.main === module) {
-  app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-  });
-}
