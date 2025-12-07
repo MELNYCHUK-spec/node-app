@@ -1,0 +1,23 @@
+# Node.js
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Git
+.git
+.gitignore
+
+# Environment
+.env
+.env.*
+
+# Logs
+logs
+*.log
+
+# SQLite база (если используешь volume для хранения)
+data/*.db

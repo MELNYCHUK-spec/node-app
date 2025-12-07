@@ -5,17 +5,13 @@ const cors = require("cors");
 require("dotenv").config();
 
 // Configure ports
-const args = process.argv;
-const p_index = args.indexOf("--p");
-const cp_index = args.indexOf("--cp");
-const PORT = p_index !== -1 ? args[p_index + 1] : process.env.PORT || 5000;
-const CLIENT_PORT =
-  cp_index !== -1 ? args[cp_index + 1] : process.env.CLIENT_PORT || 3000;
+
+const PORT = process.env.PORT || 5000;
 
 const app = express();
 app.use(
   cors({
-    origin: `http://localhost:${CLIENT_PORT}`,
+    origin: process.env.CLIENT_ORIGIN,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   })
 );
@@ -23,7 +19,7 @@ app.use(
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const db = new sqlite3.Database("softserve.db", (err) => {
+const db = new sqlite3.Database("./data/softserve.db", (err) => {
   if (err) {
     console.error(err.message);
   }
