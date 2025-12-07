@@ -17,7 +17,7 @@ app.use(
   cors({
     origin: `http://localhost:${CLIENT_PORT}`,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-  }),
+  })
 );
 
 app.use(express.json());
@@ -126,3 +126,11 @@ app.delete("/api/products/:id", (req, res) => {
     });
   });
 });
+
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;
